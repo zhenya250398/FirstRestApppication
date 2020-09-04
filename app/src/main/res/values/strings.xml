@@ -5,4 +5,5 @@
     <string name="button1">POST</string>
     <string name="name1"></string>
     <string name="arrayJson">TextView</string>
+    <string name="buttonDelete">DELETE</string>
 </resources>

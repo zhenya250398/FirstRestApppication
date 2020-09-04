@@ -35,11 +35,12 @@ public class MainActivity extends AppCompatActivity {
         final EditText myEditText2 = findViewById(R.id.editTextTextPersonName2);
         Button myButton = findViewById(R.id.button);
         Button myButton2 = findViewById(R.id.button2);
+        Button buttonDelete = findViewById(R.id.buttonDelete);
 
 
         final RequestQueue requestQueue = Volley.newRequestQueue(this);
         final String url = "http://62.109.31.160:8088/main/";
-        final JsonArrayRequest objectRequest0 = new JsonArrayRequest(
+        final JsonArrayRequest requestAll = new JsonArrayRequest(
                 Request.Method.GET,
                 url,
                 null,
@@ -75,13 +76,13 @@ public class MainActivity extends AppCompatActivity {
         );
 
         requestQueue.add(objectRequest);
-        requestQueue.add(objectRequest0);
+        requestQueue.add(requestAll);
 
 
         View.OnClickListener oclBtnOk = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final JsonObjectRequest objectRequest1 = new JsonObjectRequest(
+                final JsonObjectRequest requestOne = new JsonObjectRequest(
                         Request.Method.GET,
                         url+myEditText.getText(),
                         null,
@@ -98,16 +99,17 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                 );
-                requestQueue.add(objectRequest1);
+                requestQueue.add(requestOne);
+                requestQueue.add(requestAll);
             }
         };
 
         View.OnClickListener oclBtnOk2 = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                JsonObjectRequest objectRequest2 = null;
+                JsonObjectRequest requestAdd = null;
                 try {
-                    objectRequest2 = new JsonObjectRequest(
+                    requestAdd = new JsonObjectRequest(
                             Request.Method.POST,
                             url,
                             new JSONObject("{text:'"+myEditText2.getText()+"'}"),
@@ -127,11 +129,38 @@ public class MainActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                requestQueue.add(objectRequest2);
+                requestQueue.add(requestAdd);
+                requestQueue.add(requestAll);
             }
         };
 
+        View.OnClickListener oclBtnDl = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                JsonObjectRequest requestDelete = null;
+                requestDelete = new JsonObjectRequest(
+                        Request.Method.DELETE,
+                        url+myEditText.getText(),
+                        null,
+                        new Response.Listener<JSONObject>(){
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                myTextView.setText(response.toString());
+                            }
+                        },
+                        new Response.ErrorListener(){
+                            @Override
+                            public void onErrorResponse(VolleyError error){
+                                myTextView.setText(error.toString());
+                            }
+                        }
+                );
+                requestQueue.add(requestDelete);
+                requestQueue.add(requestAll);
+            }
+        };
         myButton.setOnClickListener(oclBtnOk);
         myButton2.setOnClickListener(oclBtnOk2);
+        buttonDelete.setOnClickListener(oclBtnDl);
     }
 }
