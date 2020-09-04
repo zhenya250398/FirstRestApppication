@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">MyApplication</string>
+    <string name="button">GET</string>
+    <string name="name">1</string>
+    <string name="button1">POST</string>
+    <string name="name1"></string>
+    <string name="arrayJson">TextView</string>
+</resources>
